@@ -4,7 +4,7 @@ import {buildDocument} from './document-engine.js';
 import {exhibitTemplates} from './exhibit-templates.js';
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const valid=d=>Array.isArray(d.exhibits)?d.exhibits.filter(x=>Number.isInteger(x)&&x>=0&&x<exhibitTemplates.length):[];
-const omitted=d,type=>new Set(d.excludedSections?.[type]||[]);
+const omitted=(d,type)=>new Set(d.excludedSections?.[type]||[]);
 const isOmitted=(d,v)=>d.decisions?.[v.id]==='Not applicable'||(d.excludedFields||[]).includes(v.id);
 export function publishDocument(d,type,{showOpenDecisions=true}={}){
  const raw=buildDocument(d,type), excluded=omitted(d,type), chosen=valid(d);
