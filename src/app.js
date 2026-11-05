@@ -120,7 +120,9 @@ function standardPage(node){
  <p class="warning">AIA G203 provides a file naming protocol decision, NCS CAD layers are distinct from filenames, ISO 19650 needs an applicable annex/project convention, and BIMForum LOD requires element-level decisions. No conformance is certified.</p>`;
  node.querySelectorAll('[data-standard]').forEach(el=>el.onchange=()=>{const set=new Set(standardsFor(draft));el.checked?set.add(el.dataset.standard):set.delete(el.dataset.standard);draft.selectedStandards=[...set];save();render()});
  node.querySelector('#isoAnnex').oninput=e=>{draft.isoAnnex=e.target.value;save()};
+ node.querySelector('#isoAnnex').onchange=()=>render();
  node.querySelector('#namingConvention').oninput=e=>{draft.namingConvention=e.target.value;save()};
+ node.querySelector('#namingConvention').onchange=()=>render();
  node.querySelector('#standards-clear').onclick=()=>{if(confirm('Clear standard selections and naming settings? Existing discovery answers are retained.')){draft.selectedStandards=[];draft.isoAnnex='';draft.namingConvention='';save();render()}};
 }
 
