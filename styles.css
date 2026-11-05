@@ -49,3 +49,20 @@
 .document-sheet .review{padding:12px;background:#fff7eb;border:1px solid #e4c698}
 .document-sheet .footer-note{color:#63748b;font-size:11px}
 @media(max-width:520px){.document-sheet{padding:15px;max-height:660px}.document-sheet .cover{padding:22px 3px}.document-sheet .decisions{padding:10px}}
+
+/* Reset actions and multi-select architecture/project type control */
+.project-types{border:1px solid #dbe7f3;border-radius:11px;padding:15px 17px;margin:18px 0;min-width:0}
+.project-types legend{font-weight:700;padding:0 7px;color:#244b79}
+.project-types .source{margin:6px 0 10px}
+.project-types .compact-actions{margin:8px 0 13px}
+.project-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.project-type-option{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #d8e5f2;border-radius:9px;background:#fff;min-height:45px;cursor:pointer;color:#254b73;font-size:12px;font-weight:550;line-height:1.4}
+.project-type-option:has(input:checked){background:#eaf4ff;border-color:#6a9ed6;color:#124b91}
+.project-type-option input{width:16px;height:16px;accent-color:#2168bc;margin:0;flex:0 0 auto}
+.project-type-option span{overflow-wrap:anywhere}
+.project-types .other-project{margin:14px 0 7px}
+.selection-count{font-size:11px;font-weight:700;color:#577b9c;margin-top:11px}
+.inline-reset{display:inline-flex;align-items:center;justify-content:center;margin-top:-5px;margin-bottom:11px;border:0;border-radius:6px;background:#edf4fc;color:#285e9c;padding:7px 10px;font-weight:650;font-size:12px}
+.inline-reset:hover{background:#dcecff}
+.compact-actions{gap:8px}.compact-actions .btn{min-height:34px}
+@media(max-width:520px){.project-type-grid{grid-template-columns:1fr}.project-types{padding:12px}.project-type-option{min-height:46px}.compact-actions .btn{flex:1}}
