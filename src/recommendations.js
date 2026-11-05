@@ -60,8 +60,10 @@ const combine=(items)=>items.filter(Boolean).join(' ');
 export function recommendation(questionId,profile){
  const item=base[questionId];if(!item)return null;
  const d=(profile.disciplines||[]).map(x=>disciplineAdditions[x]?.[questionId]);
- const p=projectAdditions[profile.projectType]?.[questionId];
- return {value:combine([item[0],...d,p]),consider:item[1],origin:'Suggested industry practice; confirm adoption with the organization'};
+ const selected=Array.isArray(profile.projectTypes)?profile.projectTypes:(profile.projectType&&profile.projectType!=='General / mixed portfolio'?[profile.projectType]:[]);
+ const byType=[...new Set(selected)].map(x=>projectAdditions[x]?.[questionId]);
+ const other=selected.includes('Other')&&String(profile.otherProjectType||'').trim()?`Custom project type (${profile.otherProjectType.trim()}): confirm project-specific requirements, participants and information exchanges.`:null;
+ return {value:combine([item[0],...d,...byType,other]),consider:item[1],origin:'Suggested industry practice; confirm adoption with the organization'};
 }
 export function profileRelevant(moduleId,profile){
  // Keep governance and information requirements visible. Added guidance adapts to selection.
