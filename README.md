@@ -26,6 +26,15 @@ Visit http://localhost:8000. Opening `index.html` directly from disk may not loa
 - A mobile More menu for Standards, Exhibits and organization/backup tools
 - PWA installation does **not** provide cloud sync: browser-local drafts stay on that device and origin; always export JSON backups before switching browsers or devices
 
+## Standards-aware conditional drafting
+- Select AIA digital practice (G203-2022 family), NCS V7, ISO 19650-2 and/or BIMForum LOD 2025 in the Standards workspace
+- Applicable selections add distinct, source-traceable procedural or requirements provisions to BRD and corporate BEP output, without treating every industry reference as contractually adopted
+- Contextual considerations appear alongside relevant discovery questions (naming, CDE, exchanges, responsibilities, Model Element Table and QA/QC)
+- ISO 19650 naming requires an explicitly selected national annex or project information standard; no universal filename is fabricated
+- AIA G203 file-naming protocols and NCS AIA CAD layer/sheet conventions remain separate, with edition and applicability cautions
+- Project types (including healthcare and infrastructure) and civil/MEP disciplines trigger targeted provisions
+- Original interpretive clauses and references only; no copyrighted standard text republished or certification of compliance
+
 ## What works
 - Responsive navigation and organization profile
 - Nine discovery sections built from user-supplied BIM frameworks
