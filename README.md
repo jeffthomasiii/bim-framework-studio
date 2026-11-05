@@ -2,7 +2,7 @@
 
 **Standards-informed BIM discovery and document drafting for AEC organizations.**
 
-This is the initial working application. It turns an organization's answers into **two separate, unapproved working drafts**: a BIM Requirements Document and a corporate BIM Execution Plan template. Both drafts display unanswered decisions rather than inventing policies.
+This is the initial working application. Its blue, responsive UI follows the approved desktop and mobile mockup direction, and the same site now includes an installable Progressive Web App (PWA) shell. It turns an organization's answers into **two separate, unapproved working drafts**: a BIM Requirements Document and a corporate BIM Execution Plan template. Both drafts display unanswered decisions rather than inventing policies.
 
 ## Live deployment
 After GitHub Pages is set to **GitHub Actions** under Settings > Pages, merge the feature PR into main. The site will deploy to:
@@ -17,6 +17,14 @@ python -m http.server 8000
 ```
 
 Visit http://localhost:8000. Opening `index.html` directly from disk may not load the JavaScript module, so use a local server.
+
+## Blue brand and PWA
+- Navy and blue identity with a geometric BIM Studio mark, card-based desktop overview and persistent mobile bottom navigation
+- Web app manifest and 192/512-pixel PNG icons, including a maskable icon
+- Service worker that caches the application shell for offline re-entry after the first successful online load
+- Install prompts when the browser allows them, plus browser-specific installation guidance
+- A mobile More menu for Standards, Exhibits and organization/backup tools
+- PWA installation does **not** provide cloud sync: browser-local drafts stay on that device and origin; always export JSON backups before switching browsers or devices
 
 ## What works
 - Responsive navigation and organization profile
@@ -35,6 +43,7 @@ Visit http://localhost:8000. Opening `index.html` directly from disk may not loa
 
 ## Current limitations
 - No accounts, backend, collaboration, DOCX/PDF generation, contractual review, LOD validation or standards compliance certification
+- PWA installation and offline support depend on browser, device, and a successful initial online visit; latest online content requires connectivity and may need a reload
 - Data is stored in browser localStorage. It is not encrypted or synchronized. Do not enter sensitive client material on a shared device.
 - Document previews are structured discovery transcripts, **not finished professional templates**.
 - Recommended content represents authored starting practices, not prescriptive standards requirements. Do not assume automatic compliance or contractual incorporation.
