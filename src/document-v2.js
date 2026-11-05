@@ -11,7 +11,7 @@ export function publishDocument(d,type,{showOpenDecisions=true}={}){
  const sections=raw.sections.filter(s=>!excluded.has(s.title)).map((s,index)=>({
   ...s,number:index+1,clauses:s.clauses.map((c,j)=>{
    const provisions=(c.decisions||[]).filter(v=>!isOmitted(d,v)&&v.value).map(v=>({text:v.value,origin:v.origin,status:v.status,id:v.id}));
-   return {...c,number:(index+1)+'.'+(j+1),provisions,decisions:[]};
+   return {...c,number:(index+1)+'.'+(j+1),keys:(c.decisions||[]).map(v=>v.id),provisions,decisions:[]};
   })
  }));
  if(chosen.length){
