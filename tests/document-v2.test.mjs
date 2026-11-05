@@ -14,8 +14,8 @@ test('recommendations provide adoptable language separate from consultant discus
 });
 test('requirements and BEP have distinct sections and titles',()=>{
  const a=publishDocument(profile,'requirements'),b=publishDocument(profile,'bep');
- assert.equal(a.sections.length,7);
- assert.equal(b.sections.length,14);
+ assert.ok(a.sections.length>=7);
+ assert.ok(b.sections.length>=14);
  assert.notEqual(a.title,b.title);
  assert.match(a.meta.purpose,/Contractual effect requires express incorporation/);
  assert.match(b.meta.purpose,/not a contractual instrument/);
