@@ -95,3 +95,5 @@
 :root[data-theme="dark"] .document-sheet{background:#fff;color:#243449;border-color:#455b72}
 :root[data-theme="dark"] .document-sheet h1,:root[data-theme="dark"] .document-sheet h2,:root[data-theme="dark"] .document-sheet h3{color:#173b64}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="dark"]){color-scheme:dark;--navy:#b8d4fc;--navy2:#06142b;--blue:#8cbffd;--accent:#74b2ff;--light-blue:#203553;--text:#edf4ff;--muted:#a6b8cf;--line:#32445d;--canvas:#0c1728;--white:#14243a;--shadow:none}}
+
+.desktop-theme{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}.desktop-theme select{border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:var(--white);color:var(--text)}@media(max-width:780px){.desktop-theme{display:none}}
