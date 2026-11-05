@@ -2,6 +2,8 @@
 // consultant field guide, and optional exhibits. Not a reproduction of licensed standards.
 // All language is subject to client, project, contract and legal review.
 import {modules,allQuestions} from './catalog.js';
+import {projectTypes} from './recommendations.js';
+import {projectTypeLabels} from './profile-controls.js';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const text=(answers,id)=>String(answers?.[id]||'').trim();
 const entry=(d,id)=>({value:text(d.answers,id),origin:d.origins?.[id]==='recommended'?'Suggested default':'Client-entered',status:d.decisions?.[id]||'Draft / unapproved'});
@@ -76,7 +78,7 @@ export function buildDocument(d,type){
  const sections=documentSections[type]||documentSections.requirements;
  const review=documentWarnings(d,type);
  const role=type==='requirements'?'Requirements baseline; contractual force only when expressly incorporated into executed agreements.':'Reusable non-project-specific execution procedures; not automatically a contractual instrument.';
- const meta={organization:d.organization||'[ORGANIZATION TO CONFIRM]',projectFocus:d.projectType||'General / mixed portfolio',disciplines:(d.disciplines||[]).join(', ')||'[DISCIPLINES TO CONFIRM]',revision:'DRAFT 0.1',status:'WORKING DRAFT — NOT APPROVED',purpose:role};
+ const meta={organization:d.organization||'[ORGANIZATION TO CONFIRM]',projectFocus:projectTypeLabels(d,projectTypes.filter(x=>x!=='General / mixed portfolio')).join(', ')||'[PROJECT TYPES TO CONFIRM]',disciplines:(d.disciplines||[]).join(', ')||'[DISCIPLINES TO CONFIRM]',revision:'DRAFT 0.1',status:'WORKING DRAFT — NOT APPROVED',purpose:role};
  const paragraphs=sections.map((section,i)=>({number:i+1,title:section.title,source:section.source,clauses:section.clauses.map((c,j)=>({number:(i+1)+'.'+(j+1),heading:c.heading,body:c.body,decisions:c.keys.map(id=>({id,...entry(d,id)}))}))}));
  return {type,title:docTitle(type),meta,sections:paragraphs,review,notices:['This is an editable organizational working draft, not legal advice or a certification of AIA, BIMForum, NCS or ISO compliance.','Industry reference editions, contractual incorporation, project responsibilities and actual acceptance criteria require approval by the appropriate parties.']};
 }
