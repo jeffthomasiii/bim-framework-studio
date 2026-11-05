@@ -16,8 +16,8 @@ test('choose one, multiple, all or none project types',()=>{
  assert.deepEqual(d.projectTypes,['Healthcare']);
  d=toggleProjectType(d,'Education',true,valid);
  assert.deepEqual(d.projectTypes,['Healthcare','Education']);
- assert.match(recommendation('projectArchetypes',d).value,/Healthcare:/);
- assert.match(recommendation('projectArchetypes',d).value,/Education:/);
+ assert.match(recommendation('projectArchetypes',d).consider,/Healthcare:/);
+ assert.match(recommendation('projectArchetypes',d).consider,/Education:/);
  d=selectAllProjectTypes(d,valid);
  assert.deepEqual(d.projectTypes,valid);
  d=clearProjectTypes(d,valid);
