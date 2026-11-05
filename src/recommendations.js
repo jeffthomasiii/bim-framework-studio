@@ -1,4 +1,5 @@
 import {policyText,consultantConsiderations} from './policy-language.js';
+import {policyExtension} from './policy-extensions.js';
 // Original recommendations informed by the user's BEP discovery/playbook and general AEC practice.
 // These are proposed starting points, never contract terms, a compliance claim, or adopted standards.
 export const projectTypes=[
@@ -64,7 +65,7 @@ export function recommendation(questionId,profile){
  const selected=Array.isArray(profile.projectTypes)?profile.projectTypes:(profile.projectType&&profile.projectType!=='General / mixed portfolio'?[profile.projectType]:[]);
  const byType=[...new Set(selected)].map(x=>projectAdditions[x]?.[questionId]);
  const other=selected.includes('Other')&&String(profile.otherProjectType||'').trim()?`Custom project type (${profile.otherProjectType.trim()}): confirm project-specific requirements, participants and information exchanges.`:null;
- return {value:policyText[questionId]||item[0],consider:combine([consultantConsiderations[questionId]||item[1],...d,...byType,other]),origin:'Proposed policy wording; confirm adoption with the organization'};
+ return {value:combine([policyText[questionId]||item[0],policyExtension(questionId,profile)]),consider:combine([consultantConsiderations[questionId]||item[1],...d,...byType,other]),origin:'Proposed policy wording; confirm adoption with the organization'};
 }
 export function profileRelevant(moduleId,profile){
  // Keep governance and information requirements visible. Added guidance adapts to selection.
