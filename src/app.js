@@ -1,5 +1,6 @@
 import {disciplines,standards,modules,exhibitNames,allQuestions} from './catalog.js';
 import {projectTypes,recommendation} from './recommendations.js';
+import {buildDocument,documentText,documentHtml,docTitle} from './document-engine.js';
 const STORAGE='bim-framework-studio:v1';
 const initial={organization:'',organizationType:'',projectType:'General / mixed portfolio',disciplines:[],objective:'',answers:{},decisions:{},origins:{},exhibits:[]};
 const read=()=>{try{const v=JSON.parse(localStorage.getItem(STORAGE)||'null');return v&&typeof v==='object'?{...initial,...v,answers:v.answers||{},decisions:v.decisions||{},origins:v.origins||{},disciplines:Array.isArray(v.disciplines)?v.disciplines:[],exhibits:Array.isArray(v.exhibits)?v.exhibits:[]}:structuredClone(initial)}catch{return structuredClone(initial)}};
@@ -100,14 +101,25 @@ function standardPage(node){
  node.innerHTML=`<p class="eyebrow">REFERENCE REGISTRY</p><h1>Standards and applicability.</h1><p class="lead">These are reference records and cautions, not embedded licensed standards, an automated rules engine or a claim of conformance.</p><div class="standards">${standards.map(s=>`<article class="standard"><div class="detail"><div><h2>${escapeHtml(s.name)}</h2><span class="source">${escapeHtml(s.edition)}</span></div><span class="pill">${escapeHtml(s.status)}</span></div><p>${escapeHtml(s.note)}</p><a href="${s.url}" target="_blank" rel="noopener noreferrer">Source website</a></article>`).join('')}</div><p class="warning">The 2025 BIMForum Part I is published under CC BY-NC-ND and Part II under CC BY-NC. Do not embed, adapt or redistribute those files without evaluating licensing and permission. User-provided references are not a substitute for rights to commercial reuse.</p>`;
 }
 function documents(node){
- const preview=buildPreview(currentDoc);
- node.innerHTML=`<p class="eyebrow">DOCUMENT STUDIO · EARLY PREVIEW</p><h1>Draft from decisions.</h1><p class="lead">Both outputs reference one organizational discovery dataset. They are structured working drafts, not reproductions of source templates or final contract language. Suggested content is identified.</p><div class="doc-options">${['requirements','bep'].map(t=>`<button class="btn ${currentDoc===t?'active':''}" data-doc="${t}">${docName(t)}</button>`).join('')}</div><div class="panel"><div class="section-top"><h2>${docName(currentDoc)}</h2><span class="pill">Draft · Unapproved</span></div><p class="source">${suggestedCount()} suggested answers in this workspace. All suggested content requires client review, edition selection, scope validation and approvals.</p><div class="actions"><button class="btn" id="fill-document">Fill unanswered fields with defaults</button></div><div class="actions"><button class="btn primary" id="md-download">Download Markdown draft</button><button class="btn" id="txt-download">Download text draft</button></div><pre class="preview" id="preview"></pre></div><p class="warning">This release does not generate final DOCX/PDF, determine contractual precedence, validate LOD assignments or certify ISO/AIA/NCS compliance.</p>`;
- node.querySelector('#preview').textContent=preview;
+ const doc=buildDocument(draft,currentDoc),preview=documentText(doc),html=documentHtml(doc);
+ const requested=doc.review.missing.length,unapproved=doc.review.unapproved.length;
+ node.innerHTML=`<p class="eyebrow">DOCUMENT STUDIO · STRUCTURED WORKING DRAFT</p><h1>Review the actual document.</h1><p class="lead">These outputs are now drafted as distinct professional document structures: the BIM Requirements Document defines baseline expectations, while the corporate BEP establishes repeatable implementation procedures. Every proposed clause requires client review before issue.</p>
+ <div class="doc-options">${['requirements','bep'].map(t=>`<button class="btn ${currentDoc===t?'active':''}" data-doc="${t}">${docTitle(t)}</button>`).join('')}</div>
+ <div class="panel"><div class="section-top"><h2>${escapeHtml(doc.title)}</h2><span class="pill">Working draft · Not approved</span></div><div class="stats-row"><div class="metric"><strong>${doc.sections.length}</strong><span>Document sections</span></div><div class="metric"><strong>${requested}</strong><span>Missing decisions</span></div><div class="metric"><strong>${unapproved}</strong><span>Unapproved responses</span></div></div>
+ <p class="source">The document includes complete baseline prose clauses plus organization-specific provisions drawn from discovery responses. Recommendations are marked as suggested and open decisions remain conspicuous.</p>
+ <div class="actions"><button class="btn" id="fill-document">Fill missing answers with suggested defaults</button></div>
+ <div class="actions"><button class="btn primary" id="word-download">Download editable Word document (.doc)</button><button class="btn" id="html-download">Download HTML</button><button class="btn" id="txt-download">Download text</button><button class="btn" id="print-doc">Print / Save PDF</button></div>
+ <div class="document-sheet" id="document-sheet"></div></div>
+ <p class="warning">This is not a final issued BIM Requirements Document or project-specific BEP. It requires organizational decisions, authorized approvals, applicable standards editions, contract review and project adaptation. Word export is an editable HTML-based .doc file, not a native .docx.</p>`;
+ node.querySelector('#document-sheet').innerHTML=html.slice(html.indexOf('<body>')+6,html.indexOf('</body>'));
  node.querySelector('#fill-document').onclick=()=>{applyDefaults(true);render()};
  node.querySelectorAll('[data-doc]').forEach(e=>e.onclick=()=>{currentDoc=e.dataset.doc;render()});
+ node.querySelector('#word-download').onclick=()=>download('bim-'+currentDoc+'-working-draft.doc',html,'application/msword');
+ node.querySelector('#html-download').onclick=()=>download('bim-'+currentDoc+'-working-draft.html',html,'text/html');
  node.querySelector('#txt-download').onclick=()=>download('bim-'+currentDoc+'-working-draft.txt',preview);
- node.querySelector('#md-download').onclick=()=>download('bim-'+currentDoc+'-working-draft.md','# '+docName(currentDoc)+'\n\n'+preview.replace(/\n/g,'\n\n'));
+ node.querySelector('#print-doc').onclick=()=>{const win=window.open('','_blank');if(!win){alert('Allow popups to print the document, or download the HTML file and print it.');return}win.document.open();win.document.write(html);win.document.close();win.focus();setTimeout(()=>win.print(),350)};
 }
+
 function exhibits(node){
  node.innerHTML=`<p class="eyebrow">OPTIONAL EXHIBIT LIBRARY</p><h1>Select supporting exhibits.</h1><p class="lead">Your reference library contains 14 exhibit starters. Selection records possible future attachments, not included service scope or a completed deliverable.</p><div class="panel"><div class="checkboxes">${exhibitNames.map((x,i)=>`<label class="question"><input type="checkbox" data-exhibit="${i}" ${draft.exhibits.includes(i)?'checked':''}> Exhibit ${String(i+1).padStart(2,'0')} · ${escapeHtml(x)}</label>`).join('')}</div><p class="source">Exhibit content and any commercial scope require separate review and approval.</p></div>`;
  node.querySelectorAll('[data-exhibit]').forEach(e=>e.onchange=()=>{const n=Number(e.dataset.exhibit);draft.exhibits=e.checked?[...draft.exhibits,n]:draft.exhibits.filter(x=>x!==n);save()});
