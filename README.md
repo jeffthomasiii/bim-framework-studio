@@ -30,7 +30,10 @@ Visit http://localhost:8000. Opening `index.html` directly from disk may not loa
 - Responsive navigation and organization profile
 - Nine discovery sections built from user-supplied BIM frameworks
 - Field-by-field recommended starting points and expandable considerations
-- Discipline and primary project-type profiles that tailor those recommendations
+- Discipline and architecture/project-type profiles that tailor those recommendations
+- Choose one, several, or all architecture/project types, with an Other text field for custom building types
+- Reset a single discovery field, a section, all discovery responses, profile choices, project-type selections, or the entire local workspace (confirmation before destructive resets)
+- Previously saved single-choice project types migrate to the new multi-select format
 - Use a single recommendation, fill a section, or populate every unanswered discovery field
 - Regenerate all defaults only with explicit confirmation (this replaces existing custom entries)
 - Track suggested versus client-authored values; defaults always begin Draft / unapproved
