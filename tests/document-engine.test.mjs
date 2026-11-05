@@ -22,7 +22,8 @@ test('missing answers stay explicitly open rather than becoming approved require
 });
 test('recommendation origin and client approval statuses are visible',()=>{
  const draft=structuredClone(empty),r=recommendation('clashes',draft);
- assert.match(r.value,/Mechanical:/);
+ assert.match(r.value,/project team coordinates/);
+ assert.match(r.consider,/Mechanical:/);
  draft.answers.clashes=r.value;
  draft.origins.clashes='recommended';
  const doc=buildDocument(draft,'bep');
